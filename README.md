@@ -7,37 +7,49 @@ apt install gcc libc6-dev libsodium-dev make autoconf
 ```
 ## Select the PHP Version You Want to Install
 # Choose the PHP version you want to install, for example:
-# apt install php7.4 or apt install php8.0, depending on your needs.
-
+```sh
+apt install php8.2 -y
+```
 ## Install Common PHP Extensions
 # Install common PHP extensions that are often required. Example for PHP7.4:
-# apt install php7.4-mbstring php7.4-xml php7.4-mysql
-
+```sh
+apt install php8.2-mbstring php8.2-xml php8.2-mysql
+```
 ## Enable PHP-FPM and Apache2 Configurations
 # To configure Apache2 to work with PHP-FPM:
 # 1. Enable the necessary Apache2 modules for PHP-FPM:
-# a2enmod proxy_fcgi setenvif
+```sh
+a2enmod proxy_fcgi setenvif
+```
 # 2. Enable PHP-FPM for your chosen version (example for PHP7.4):
-# a2enconf php7.4-fpm
+```sh
+a2enconf php8.2-fpm
+```
 # 3. Restart Apache2 to apply the changes:
-# systemctl restart apache2
-
+```sh
+systemctl restart apache2
+```
 ## Alternatively, Set Up Nginx Instead of Apache2:
 # If you want to use Nginx instead of Apache2, install Nginx and configure it like this:
-# sudo apt install nginx
+```sh
+sudo apt install nginx
+```
 # Then configure Nginx by editing the configuration file:
-# sudo nano /etc/nginx/sites-available/default
+```sh
+sudo nano /etc/nginx/sites-available/default
+```
 # Add the following block to proxy requests to PHP-FPM:
 #
-# server {
-#     listen 80;
-#     server_name yourdomain.com;
-#     root /var/www/html;
-#     index index.php;
-#     location ~ \.php$ {
-#         include snippets/fastcgi-php.conf;
-#         fastcgi_pass unix:/run/php/php7.4-fpm.sock; # Update to the correct PHP version.
-#         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+```sh
+server {
+     listen 80;
+     server_name yourdomain.com;
+     root /var/www/html;
+     index index.php;
+     location ~ \.php$ {
+     include snippets/fastcgi-php.conf;
+     fastcgi_pass unix:/run/php/php7.4-fpm.sock; # Update to the correct PHP version.
+     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 #         include fastcgi_params;
 #     }
 # }
