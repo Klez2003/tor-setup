@@ -41,20 +41,22 @@ sudo nano /etc/nginx/sites-available/default
 # Add the following block to proxy requests to PHP-FPM:
 #
 ```sh
-server {
+ server {
      listen 80;
      server_name yourdomain.com;
      root /var/www/html;
      index index.php;
      location ~ \.php$ {
-     include snippets/fastcgi-php.conf;
-     fastcgi_pass unix:/run/php/php7.4-fpm.sock; # Update to the correct PHP version.
-     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-#         include fastcgi_params;
-#     }
-# }
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/run/php/php7.4-fpm.sock; # Update to the correct PHP version.
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+     }
+ }
 # Restart Nginx:
-# systemctl restart nginx
+```sh
+systemctl restart nginx
+```
 
 ## Clone the Repository
 # Clone the mkp224o repository from GitHub:
@@ -72,7 +74,7 @@ cd mkp224o
 # 2. Configure the build with ./configure
 # 3. Build the project with 'make'
 # 4. Install the build files using the specified prefix
-```
+```sh
 ./autogen.sh
 ./configure
 make
@@ -98,26 +100,40 @@ sudo chmod 644 /var/lib/tor/hidden_service/hostname
 sudo nano /etc/tor/torrc
 ```
 # Add these lines to the `torrc` file:
-# HiddenServiceDir /var/lib/tor/hidden_service/
-# HiddenServicePort 80 127.0.0.1:8080 # This forwards Tor's hidden service port 80 to your local web server's port 8080.
+ HiddenServiceDir /var/lib/tor/hidden_service/
+ HiddenServicePort 80 127.0.0.1:80 # This forwards Tor's hidden service port 80 to your local web server's port 80.
 
 ## Change Port for Apache2 or Nginx
 # If you want to change the default port for Apache2 or Nginx (for example, to use port 8080 instead of 80), follow these steps:
 
 # For Apache2:
 # 1. Open Apache2's default configuration file:
-# sudo nano /etc/apache2/sites-available/000-default.conf
+```sh
+sudo nano /etc/apache2/sites-available/000-default.conf
+```
 # 2. Look for the `Listen` directive and change it from `80` to `8080`:
-# Listen 8080
+```sh
+Listen 8080
+```
 # 3. Update the VirtualHost block to use port 8080:
-# <VirtualHost *:8080>
+```sh
+<VirtualHost *:8080>
+```
 # 4. Restart Apache2 to apply the change:
-# systemctl restart apache2
+```sh
+systemctl restart apache2
+```
 
 # For Nginx:
 # 1. Open the Nginx configuration file for your site:
-# sudo nano /etc/nginx/sites-available/default
+```sh
+sudo nano /etc/nginx/sites-available/default
+```
 # 2. Change the `listen` directive to `8080`:
-# listen 8080;
+```sh
+listen 8080;
+```
 # 3. Restart Nginx to apply the change:
-# systemctl restart nginx
+```sh
+systemctl restart nginx
+```
